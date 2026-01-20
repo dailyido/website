@@ -3,120 +3,122 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Daily I Do | Wedding Planning Made Beautiful</title>
-  <meta name="description" content="Plan your perfect day with Daily I Do - the elegant wedding planning app that makes every moment count.">
+  <title>Daily I Do | Wedding Planning Made Simple</title>
+  <meta name="description" content="Plan your perfect wedding day with Daily I Do. The modern wedding planning app that keeps everything organized.">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💍</text></svg>">
 </head>
 <body>
   <!-- Navigation -->
-  <nav class="nav" id="navbar">
+  <nav class="nav">
     <div class="container">
       <div class="nav-inner">
-        <a href="index.html" class="nav-logo">Daily <span>I Do</span></a>
-        <ul class="nav-links" id="navLinks">
+        <!-- Logo -->
+        <a href="index.html" class="nav-logo">
+          <span class="nav-logo-icon">💍</span>
+          Daily I Do
+        </a>
+
+        <!-- Center Nav Links -->
+        <ul class="nav-center">
           <li><a href="index.html" class="nav-link active">Home</a></li>
-          <li><a href="realwedding.html" class="nav-link">Share Your Day</a></li>
+          <li><a href="realwedding.html" class="nav-link">Real Weddings</a></li>
           <li><a href="admin.html" class="nav-link">Admin</a></li>
         </ul>
-        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+
+        <!-- Right - App Store Button -->
+        <div class="nav-right">
+          <a href="#" class="app-store-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+            </svg>
+            <span class="app-store-btn-text">
+              <small>Download on the</small>
+              App Store
+            </span>
+          </a>
+
+          <!-- Mobile Toggle -->
+          <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
       </div>
     </div>
   </nav>
 
   <!-- Hero Section -->
   <section class="hero">
-    <div class="hero-decoration hero-decoration-1"></div>
-    <div class="hero-decoration hero-decoration-2"></div>
-
     <div class="container">
-      <div class="hero-content">
-        <p class="hero-eyebrow">Welcome to</p>
-        <h1 class="hero-title">Daily <em>I Do</em></h1>
-        <p class="hero-subtitle">
-          Where every love story finds its perfect planning partner.
-          Elegantly crafted tools to bring your dream wedding to life.
-        </p>
-        <div class="hero-actions">
-          <a href="realwedding.html" class="btn btn-primary">Share Your Wedding</a>
-          <a href="#about" class="btn btn-outline">Learn More</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- About Section -->
-  <section class="section" id="about">
-    <div class="container container-narrow">
-      <div class="text-center stagger">
-        <p class="hero-eyebrow">Our Story</p>
-        <h2 class="mb-8">Planning Made <em class="text-accent">Beautiful</em></h2>
-        <p class="text-muted" style="font-size: var(--text-lg); line-height: 1.8;">
-          Daily I Do was born from a simple belief: wedding planning should be as
-          joyful as the celebration itself. We've crafted an experience that honors
-          the beauty of your love story while keeping every detail perfectly organized.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Features Section -->
-  <section class="section">
-    <div class="container">
-      <div class="text-center mb-12">
-        <p class="hero-eyebrow">Features</p>
-        <h2>Everything You <em class="text-accent">Need</em></h2>
-      </div>
-
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-8);" class="stagger">
-        <div class="card">
-          <div style="font-size: var(--text-4xl); margin-bottom: var(--space-4); color: var(--mauve-300);">
-            &#9825;
+      <div class="hero-grid">
+        <!-- Left Content -->
+        <div class="hero-content">
+          <!-- Social Proof Badge -->
+          <div class="hero-badge animate-fade-in-up">
+            <div class="hero-badge-avatars">
+              <img src="https://i.pravatar.cc/56?img=1" alt="User">
+              <img src="https://i.pravatar.cc/56?img=5" alt="User">
+              <img src="https://i.pravatar.cc/56?img=9" alt="User">
+            </div>
+            Loved by 10K+ couples
           </div>
-          <h5 style="margin-bottom: var(--space-3);">Timeline Planning</h5>
-          <p class="text-muted">
-            Organize every moment from engagement to honeymoon with our intuitive timeline tools.
-          </p>
-        </div>
 
-        <div class="card">
-          <div style="font-size: var(--text-4xl); margin-bottom: var(--space-4); color: var(--mauve-300);">
-            &#10022;
+          <!-- Headline -->
+          <h1 class="hero-title animate-fade-in-up animate-delay-1">
+            Plan your<br>perfect day
+            <span class="hero-title-accent"><br>with Daily I Do</span>
+          </h1>
+
+          <!-- Description -->
+          <p class="hero-description animate-fade-in-up animate-delay-2">
+            The modern wedding planning app that keeps your timeline, budget, vendors, and guest list beautifully organized. From engagement to honeymoon.
+          </p>
+
+          <!-- Buttons -->
+          <div class="hero-buttons animate-fade-in-up animate-delay-3">
+            <a href="#" class="app-store-btn" style="padding: 12px 20px;">
+              <svg viewBox="0 0 24 24" fill="currentColor" style="width: 24px; height: 24px;">
+                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+              </svg>
+              <span class="app-store-btn-text">
+                <small>Download on the</small>
+                <span style="font-size: 16px;">App Store</span>
+              </span>
+            </a>
           </div>
-          <h5 style="margin-bottom: var(--space-3);">Vendor Management</h5>
-          <p class="text-muted">
-            Keep track of all your vendors, contracts, and communications in one beautiful space.
-          </p>
         </div>
 
-        <div class="card">
-          <div style="font-size: var(--text-4xl); margin-bottom: var(--space-4); color: var(--mauve-300);">
-            &#9734;
+        <!-- Right - Phone Mockups -->
+        <div class="hero-phones animate-fade-in-up animate-delay-4">
+          <!-- Primary Phone -->
+          <div class="phone-mockup phone-mockup-1">
+            <!-- Replace src with your app screenshot -->
+            <div class="phone-placeholder">
+              <div>
+                <div style="font-size: 3rem; margin-bottom: 1rem;">📱</div>
+                <p>Add your app<br>screenshot here</p>
+                <p style="margin-top: 1rem; font-size: 0.75rem; opacity: 0.6;">
+                  images/phone-1.png
+                </p>
+              </div>
+            </div>
           </div>
-          <h5 style="margin-bottom: var(--space-3);">Guest Lists</h5>
-          <p class="text-muted">
-            Manage RSVPs, seating arrangements, and dietary requirements effortlessly.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- Real Weddings CTA -->
-  <section class="section" style="background: var(--white-10);">
-    <div class="container">
-      <div class="text-center stagger">
-        <p class="hero-eyebrow">Real Weddings</p>
-        <h2 class="mb-4">Share Your <em class="text-accent">Story</em></h2>
-        <p class="text-muted mb-8" style="max-width: 600px; margin-left: auto; margin-right: auto;">
-          We'd love to feature your wedding on our platform. Share your photos and
-          story to inspire other couples planning their perfect day.
-        </p>
-        <a href="realwedding.html" class="btn btn-primary">Submit Your Wedding</a>
+          <!-- Secondary Phone -->
+          <div class="phone-mockup phone-mockup-2">
+            <div class="phone-placeholder">
+              <div>
+                <div style="font-size: 3rem; margin-bottom: 1rem;">📱</div>
+                <p>Second<br>screenshot</p>
+                <p style="margin-top: 1rem; font-size: 0.75rem; opacity: 0.6;">
+                  images/phone-2.png
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -125,10 +127,10 @@
   <footer class="footer">
     <div class="container">
       <div class="footer-inner">
-        <div class="footer-logo">Daily <span style="color: var(--mauve-300); font-style: italic;">I Do</span></div>
+        <div class="footer-logo">💍 Daily I Do</div>
         <ul class="footer-links">
           <li><a href="index.html" class="footer-link">Home</a></li>
-          <li><a href="realwedding.html" class="footer-link">Share Your Day</a></li>
+          <li><a href="realwedding.html" class="footer-link">Real Weddings</a></li>
           <li><a href="#" class="footer-link">Privacy</a></li>
           <li><a href="#" class="footer-link">Terms</a></li>
         </ul>
