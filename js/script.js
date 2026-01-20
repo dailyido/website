@@ -4,176 +4,268 @@
  */
 
 // ============================================
-// Navigation Functionality
+// Supabase Configuration
 // ============================================
+// TODO: Replace with your Supabase credentials
+const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
 
+// Initialize Supabase client (loaded from CDN in HTML)
+let supabase = null;
+
+function initSupabase() {
+  if (typeof window.supabase !== 'undefined' && SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    console.log('Supabase initialized');
+  }
+}
+
+// ============================================
+// DOM Ready
+// ============================================
 document.addEventListener('DOMContentLoaded', () => {
+  initSupabase();
   initNavigation();
-  initForms();
-  initAdmin();
+  initTermsModal();
   initPhotoUpload();
+  initWeddingForm();
+  initAdmin();
 });
 
+// ============================================
+// Navigation
+// ============================================
 function initNavigation() {
-  const navbar = document.getElementById('navbar');
   const navToggle = document.getElementById('navToggle');
-  const navLinks = document.getElementById('navLinks');
+  const navCenter = document.querySelector('.nav-center');
 
-  // Scroll effect for navigation
-  if (navbar) {
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
-      }
-    });
-  }
-
-  // Mobile menu toggle
-  if (navToggle && navLinks) {
+  if (navToggle && navCenter) {
     navToggle.addEventListener('click', () => {
-      navLinks.classList.toggle('open');
+      navCenter.classList.toggle('open');
       navToggle.classList.toggle('active');
     });
-
-    // Close menu when clicking a link
-    navLinks.querySelectorAll('.nav-link').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('open');
-        navToggle.classList.remove('active');
-      });
-    });
   }
 }
 
 // ============================================
-// Form Handling
+// Terms Modal
 // ============================================
+function initTermsModal() {
+  const modal = document.getElementById('termsModal');
+  const openBtn = document.getElementById('openTerms');
+  const closeBtn = document.getElementById('closeTerms');
 
-function initForms() {
-  const weddingForm = document.getElementById('weddingForm');
-  const successMessage = document.getElementById('successMessage');
+  if (!modal) return;
 
-  if (weddingForm) {
-    weddingForm.addEventListener('submit', (e) => {
+  // Open modal
+  if (openBtn) {
+    openBtn.addEventListener('click', (e) => {
       e.preventDefault();
-
-      // Gather form data
-      const formData = new FormData(weddingForm);
-      const data = Object.fromEntries(formData.entries());
-
-      // In a real app, you would send this to a server
-      console.log('Wedding submission:', data);
-
-      // Store in localStorage for demo purposes
-      const submissions = JSON.parse(localStorage.getItem('weddingSubmissions') || '[]');
-      submissions.push({
-        ...data,
-        id: Date.now(),
-        submittedAt: new Date().toISOString(),
-        status: 'pending'
-      });
-      localStorage.setItem('weddingSubmissions', JSON.stringify(submissions));
-
-      // Show success message
-      weddingForm.classList.add('hidden');
-      successMessage.classList.remove('hidden');
-
-      // Scroll to top
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
     });
   }
+
+  // Close modal
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+  }
+
+  // Close on overlay click
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
+
+  // Close on escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
 }
 
 // ============================================
-// Photo Upload Preview
+// Photo Upload & Preview
 // ============================================
+let selectedFiles = [];
 
 function initPhotoUpload() {
   const photoInput = document.getElementById('photos');
   const photoPreview = document.getElementById('photoPreview');
   const photoUpload = document.getElementById('photoUpload');
 
-  if (photoInput && photoPreview) {
-    photoInput.addEventListener('change', (e) => {
-      photoPreview.innerHTML = '';
-      const files = Array.from(e.target.files);
+  if (!photoInput || !photoPreview) return;
 
-      files.forEach((file, index) => {
-        if (file.type.startsWith('image/')) {
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            const preview = document.createElement('div');
-            preview.style.cssText = `
-              position: relative;
-              aspect-ratio: 1;
-              border-radius: 4px;
-              overflow: hidden;
-              animation: fadeIn 0.3s ease forwards;
-              animation-delay: ${index * 0.1}s;
-              opacity: 0;
-            `;
-            preview.innerHTML = `
-              <img src="${e.target.result}" alt="Preview" style="width: 100%; height: 100%; object-fit: cover;">
-              <button type="button" class="remove-photo" data-index="${index}" style="
-                position: absolute;
-                top: 4px;
-                right: 4px;
-                width: 24px;
-                height: 24px;
-                border-radius: 50%;
-                background: rgba(0,0,0,0.7);
-                color: white;
-                border: none;
-                cursor: pointer;
-                font-size: 14px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-              ">&times;</button>
-            `;
-            photoPreview.appendChild(preview);
-          };
-          reader.readAsDataURL(file);
-        }
+  photoInput.addEventListener('change', handlePhotoSelection);
+
+  // Drag and drop
+  if (photoUpload) {
+    ['dragenter', 'dragover'].forEach(event => {
+      photoUpload.addEventListener(event, (e) => {
+        e.preventDefault();
+        photoUpload.style.borderColor = 'var(--accent)';
+        photoUpload.style.background = 'rgba(255, 255, 255, 0.05)';
       });
-
-      // Update upload text
-      if (files.length > 0) {
-        const uploadText = photoUpload.querySelector('.file-upload-text');
-        if (uploadText) {
-          uploadText.innerHTML = `<strong>${files.length} photo${files.length > 1 ? 's' : ''} selected</strong><br><span style="font-size: var(--text-sm);">Click to change selection</span>`;
-        }
-      }
     });
 
-    // Drag and drop styling
-    if (photoUpload) {
-      ['dragenter', 'dragover'].forEach(eventName => {
-        photoUpload.addEventListener(eventName, (e) => {
-          e.preventDefault();
-          photoUpload.style.borderColor = 'var(--mauve-400)';
-          photoUpload.style.background = 'var(--white-10)';
-        });
+    ['dragleave', 'drop'].forEach(event => {
+      photoUpload.addEventListener(event, (e) => {
+        e.preventDefault();
+        photoUpload.style.borderColor = '';
+        photoUpload.style.background = '';
       });
+    });
 
-      ['dragleave', 'drop'].forEach(eventName => {
-        photoUpload.addEventListener(eventName, (e) => {
-          e.preventDefault();
-          photoUpload.style.borderColor = '';
-          photoUpload.style.background = '';
-        });
+    photoUpload.addEventListener('drop', (e) => {
+      const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+      if (files.length > 0) {
+        selectedFiles = [...selectedFiles, ...files];
+        updatePhotoPreview();
+      }
+    });
+  }
+}
+
+function handlePhotoSelection(e) {
+  const files = Array.from(e.target.files).filter(f => f.type.startsWith('image/'));
+  selectedFiles = [...selectedFiles, ...files];
+  updatePhotoPreview();
+}
+
+function updatePhotoPreview() {
+  const photoPreview = document.getElementById('photoPreview');
+  const photoUpload = document.getElementById('photoUpload');
+
+  if (!photoPreview) return;
+
+  photoPreview.innerHTML = '';
+
+  selectedFiles.forEach((file, index) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const item = document.createElement('div');
+      item.className = 'photo-preview-item';
+      item.innerHTML = `
+        <img src="${e.target.result}" alt="Preview ${index + 1}">
+        <button type="button" class="remove-btn" data-index="${index}">&times;</button>
+      `;
+      photoPreview.appendChild(item);
+
+      // Add remove handler
+      item.querySelector('.remove-btn').addEventListener('click', () => {
+        selectedFiles.splice(index, 1);
+        updatePhotoPreview();
       });
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // Update upload text
+  if (photoUpload && selectedFiles.length > 0) {
+    const uploadText = photoUpload.querySelector('.file-upload-text');
+    if (uploadText) {
+      uploadText.innerHTML = `
+        <strong>${selectedFiles.length} photo${selectedFiles.length > 1 ? 's' : ''} selected</strong><br>
+        <span style="font-size: var(--text-sm); opacity: 0.6;">Click to add more</span>
+      `;
     }
   }
 }
 
 // ============================================
+// Wedding Form Submission
+// ============================================
+function initWeddingForm() {
+  const form = document.getElementById('weddingForm');
+  const successMessage = document.getElementById('successMessage');
+
+  if (!form) return;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Submitting...';
+    submitBtn.disabled = true;
+
+    try {
+      // Gather form data
+      const formData = {
+        couple_names: document.getElementById('coupleNames').value,
+        couple_instagram: document.getElementById('coupleInstagram').value || null,
+        wedding_date: document.getElementById('weddingDate').value,
+        wedding_location: document.getElementById('weddingLocation').value,
+        vendor_instagrams: document.getElementById('vendorInstagrams').value || null,
+        favorite_detail: document.getElementById('favoriteDetail').value || null,
+        terms_accepted: document.getElementById('termsAccepted').checked,
+        status: 'pending',
+        created_at: new Date().toISOString()
+      };
+
+      // Upload photos and save to database
+      if (supabase) {
+        // Upload photos to Supabase Storage
+        const photoUrls = [];
+        for (const file of selectedFiles) {
+          const fileName = `${Date.now()}-${file.name}`;
+          const { data, error } = await supabase.storage
+            .from('wedding-photos')
+            .upload(fileName, file);
+
+          if (error) throw error;
+
+          const { data: urlData } = supabase.storage
+            .from('wedding-photos')
+            .getPublicUrl(fileName);
+
+          photoUrls.push(urlData.publicUrl);
+        }
+
+        formData.photo_urls = photoUrls;
+
+        // Insert into database
+        const { error } = await supabase
+          .from('submissions')
+          .insert([formData]);
+
+        if (error) throw error;
+
+        console.log('Saved to Supabase:', formData);
+      } else {
+        // Fallback: save to localStorage for demo
+        const submissions = JSON.parse(localStorage.getItem('weddingSubmissions') || '[]');
+        formData.id = Date.now();
+        formData.photo_urls = selectedFiles.map(f => URL.createObjectURL(f));
+        submissions.push(formData);
+        localStorage.setItem('weddingSubmissions', JSON.stringify(submissions));
+        console.log('Saved to localStorage:', formData);
+      }
+
+      // Show success
+      form.classList.add('hidden');
+      successMessage.classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    } catch (error) {
+      console.error('Submission error:', error);
+      alert('There was an error submitting your wedding. Please try again.');
+      submitBtn.textContent = originalText;
+      submitBtn.disabled = false;
+    }
+  });
+}
+
+// ============================================
 // Admin Functionality
 // ============================================
-
-// Simple password for demo - in production, use proper authentication
 const ADMIN_PASSWORD = 'dailyido2025';
 
 function initAdmin() {
@@ -184,27 +276,27 @@ function initAdmin() {
   const logoutBtn = document.getElementById('logoutBtn');
   const loginError = document.getElementById('loginError');
 
+  if (!loginForm) return;
+
   // Check if already logged in
   if (sessionStorage.getItem('adminLoggedIn') === 'true') {
     showDashboard();
   }
 
-  if (loginForm) {
-    loginForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const password = document.getElementById('password').value;
+  loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const password = document.getElementById('password').value;
 
-      if (password === ADMIN_PASSWORD) {
-        sessionStorage.setItem('adminLoggedIn', 'true');
-        loginError.classList.add('hidden');
-        showDashboard();
-      } else {
-        loginError.classList.remove('hidden');
-        document.getElementById('password').value = '';
-        document.getElementById('password').focus();
-      }
-    });
-  }
+    if (password === ADMIN_PASSWORD) {
+      sessionStorage.setItem('adminLoggedIn', 'true');
+      if (loginError) loginError.classList.add('hidden');
+      showDashboard();
+    } else {
+      if (loginError) loginError.classList.remove('hidden');
+      document.getElementById('password').value = '';
+      document.getElementById('password').focus();
+    }
+  });
 
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
@@ -217,7 +309,7 @@ function initAdmin() {
     if (loginSection) loginSection.classList.add('hidden');
     if (dashboardSection) dashboardSection.classList.remove('hidden');
     if (adminFooter) adminFooter.classList.remove('hidden');
-    updateDashboardStats();
+    loadSubmissions();
   }
 
   function hideDashboard() {
@@ -227,10 +319,29 @@ function initAdmin() {
   }
 }
 
-function updateDashboardStats() {
-  const submissions = JSON.parse(localStorage.getItem('weddingSubmissions') || '[]');
+async function loadSubmissions() {
+  let submissions = [];
 
-  // Update stat cards
+  if (supabase) {
+    // Load from Supabase
+    const { data, error } = await supabase
+      .from('submissions')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (!error && data) {
+      submissions = data;
+    }
+  } else {
+    // Load from localStorage
+    submissions = JSON.parse(localStorage.getItem('weddingSubmissions') || '[]');
+  }
+
+  updateDashboardStats(submissions);
+  renderSubmissionsTable(submissions);
+}
+
+function updateDashboardStats(submissions) {
   const totalEl = document.getElementById('totalSubmissions');
   const pendingEl = document.getElementById('pendingCount');
   const approvedEl = document.getElementById('approvedCount');
@@ -241,126 +352,66 @@ function updateDashboardStats() {
   const pending = submissions.filter(s => s.status === 'pending').length;
   const approved = submissions.filter(s => s.status === 'approved').length;
 
-  // Count this month's submissions
   const now = new Date();
   const thisMonth = submissions.filter(s => {
-    const date = new Date(s.submittedAt);
+    const date = new Date(s.created_at);
     return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
   }).length;
 
   if (pendingEl) pendingEl.textContent = pending;
   if (approvedEl) approvedEl.textContent = approved;
   if (thisMonthEl) thisMonthEl.textContent = thisMonth;
-
-  // Update table with real submissions if any
-  updateSubmissionsTable(submissions);
 }
 
-function updateSubmissionsTable(submissions) {
+function renderSubmissionsTable(submissions) {
   const tableBody = document.getElementById('submissionsTable');
-  const emptyState = document.getElementById('emptyState');
-
   if (!tableBody) return;
 
-  // If there are localStorage submissions, add them to the table
-  if (submissions.length > 0) {
-    // Keep sample data and add real submissions at the top
-    const existingRows = tableBody.innerHTML;
-
-    const newRows = submissions.map(s => {
-      const submittedDate = new Date(s.submittedAt).toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric'
-      });
-
-      const weddingDate = s.weddingDate ? new Date(s.weddingDate).toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric'
-      }) : 'N/A';
-
-      const statusClass = `status-${s.status || 'pending'}`;
-
-      return `
-        <tr>
-          <td>
-            <strong>${s.partner1Name || ''} & ${s.partner2Name || ''}</strong><br>
-            <span class="text-muted" style="font-size: var(--text-sm);">${s.email || ''}</span>
-          </td>
-          <td>${weddingDate}</td>
-          <td>${s.location || 'N/A'}</td>
-          <td>${s.weddingStyle || 'N/A'}</td>
-          <td>${submittedDate}</td>
-          <td><span class="status-badge ${statusClass}">${s.status || 'Pending'}</span></td>
-          <td>
-            <button class="btn btn-ghost" style="font-size: var(--text-sm);">View</button>
-          </td>
-        </tr>
-      `;
-    }).join('');
-
-    tableBody.innerHTML = newRows + existingRows;
+  if (submissions.length === 0) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="6" style="text-align: center; padding: 3rem; opacity: 0.6;">
+          No submissions yet
+        </td>
+      </tr>
+    `;
+    return;
   }
 
-  // Filter functionality
+  tableBody.innerHTML = submissions.map(s => {
+    const date = new Date(s.wedding_date).toLocaleDateString('en-US', {
+      month: 'short', day: 'numeric', year: 'numeric'
+    });
+    const submitted = new Date(s.created_at).toLocaleDateString('en-US', {
+      month: 'short', day: 'numeric', year: 'numeric'
+    });
+    const statusClass = `status-${s.status || 'pending'}`;
+    const photoCount = s.photo_urls ? s.photo_urls.length : 0;
+
+    return `
+      <tr>
+        <td>
+          <strong>${s.couple_names}</strong><br>
+          <span class="text-muted" style="font-size: var(--text-sm);">${s.couple_instagram || 'No Instagram'}</span>
+        </td>
+        <td>${date}</td>
+        <td>${s.wedding_location}</td>
+        <td>${photoCount} photos</td>
+        <td>${submitted}</td>
+        <td><span class="status-badge ${statusClass}">${s.status || 'Pending'}</span></td>
+      </tr>
+    `;
+  }).join('');
+
+  // Setup filter
   const statusFilter = document.getElementById('statusFilter');
   if (statusFilter) {
     statusFilter.addEventListener('change', (e) => {
       const value = e.target.value;
-      const rows = tableBody.querySelectorAll('tr');
-
-      rows.forEach(row => {
-        const statusBadge = row.querySelector('.status-badge');
-        if (statusBadge) {
-          const status = statusBadge.textContent.toLowerCase();
-          if (value === 'all' || status === value) {
-            row.style.display = '';
-          } else {
-            row.style.display = 'none';
-          }
-        }
-      });
+      const filtered = value === 'all'
+        ? submissions
+        : submissions.filter(s => (s.status || 'pending') === value);
+      renderSubmissionsTable(filtered);
     });
   }
 }
-
-// ============================================
-// Utility Functions
-// ============================================
-
-// Smooth scroll for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function(e) {
-    e.preventDefault();
-    const target = document.querySelector(this.getAttribute('href'));
-    if (target) {
-      target.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
-    }
-  });
-});
-
-// Add fade-in animation to elements when they enter viewport
-const observerOptions = {
-  threshold: 0.1,
-  rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.style.opacity = '1';
-      entry.target.style.transform = 'translateY(0)';
-    }
-  });
-}, observerOptions);
-
-document.querySelectorAll('.card').forEach(card => {
-  card.style.opacity = '0';
-  card.style.transform = 'translateY(20px)';
-  card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-  observer.observe(card);
-});

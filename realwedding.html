@@ -7,23 +7,189 @@
   <meta name="description" content="Share your wedding story and photos with Daily I Do. Inspire other couples with your beautiful celebration.">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💍</text></svg>">
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      padding: var(--space-4);
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background: var(--navy-800);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-lg);
+      max-width: 600px;
+      width: 100%;
+      max-height: 80vh;
+      overflow: hidden;
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+    }
+
+    .modal-overlay.active .modal {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      padding: var(--space-6);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h3 {
+      margin: 0;
+      font-size: var(--text-xl);
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: var(--space-2);
+      line-height: 1;
+      transition: color 0.2s;
+    }
+
+    .modal-close:hover {
+      color: var(--white);
+    }
+
+    .modal-body {
+      padding: var(--space-6);
+      overflow-y: auto;
+      max-height: 60vh;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: var(--text-sm);
+      line-height: 1.8;
+    }
+
+    .modal-body h4 {
+      color: var(--white);
+      margin: var(--space-6) 0 var(--space-3);
+      font-size: var(--text-base);
+    }
+
+    .modal-body h4:first-child {
+      margin-top: 0;
+    }
+
+    .modal-body p {
+      margin-bottom: var(--space-4);
+    }
+
+    .modal-body ul {
+      margin: var(--space-3) 0;
+      padding-left: var(--space-6);
+    }
+
+    .modal-body li {
+      margin-bottom: var(--space-2);
+    }
+
+    /* Terms link styling */
+    .terms-link {
+      color: var(--accent);
+      text-decoration: underline;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font: inherit;
+      padding: 0;
+    }
+
+    .terms-link:hover {
+      color: var(--accent-light);
+    }
+
+    /* Photo preview grid */
+    .photo-preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: var(--space-3);
+      margin-top: var(--space-4);
+    }
+
+    .photo-preview-item {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+
+    .photo-preview-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .photo-preview-item .remove-btn {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .photo-preview-item:hover .remove-btn {
+      opacity: 1;
+    }
+  </style>
 </head>
 <body class="dark-theme">
   <!-- Navigation -->
-  <nav class="nav" id="navbar">
+  <nav class="nav">
     <div class="container">
       <div class="nav-inner">
-        <a href="index.html" class="nav-logo">Daily <span>I Do</span></a>
-        <ul class="nav-links" id="navLinks">
+        <a href="index.html" class="nav-logo">
+          <span class="nav-logo-icon">💍</span>
+          Daily I Do
+        </a>
+        <ul class="nav-center">
           <li><a href="index.html" class="nav-link">Home</a></li>
-          <li><a href="realwedding.html" class="nav-link active">Share Your Day</a></li>
+          <li><a href="realwedding.html" class="nav-link active">Real Weddings</a></li>
           <li><a href="admin.html" class="nav-link">Admin</a></li>
         </ul>
-        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+        <div class="nav-right">
+          <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
       </div>
     </div>
   </nav>
@@ -31,219 +197,152 @@
   <!-- Page Header -->
   <header class="page-header">
     <div class="container">
-      <p class="hero-eyebrow" style="animation: fadeInUp 0.6s ease forwards;">Real Weddings</p>
-      <h1 style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.1s;">Share Your <em class="text-accent">Story</em></h1>
-      <p style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.2s;">
-        Let your love inspire others. We'd be honored to feature your wedding.
-      </p>
+      <p class="page-header-eyebrow">Real Weddings</p>
+      <h1>Share Your Story</h1>
+      <p>We'd love to feature your wedding. Fill out the form below!</p>
     </div>
   </header>
 
   <!-- Submission Form Section -->
-  <section class="section" style="padding-top: var(--space-8);">
+  <section class="section" style="padding-top: 0;">
     <div class="container container-narrow">
-      <form id="weddingForm" class="stagger">
-
-        <!-- Couple Information -->
-        <div class="card mb-8">
-          <h4 class="mb-8" style="border-bottom: var(--border-thin); padding-bottom: var(--space-4);">
-            &#9825; About You
-          </h4>
-
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-6);">
-            <div class="form-group">
-              <label class="form-label" for="partner1Name">Partner 1 Name *</label>
-              <input type="text" id="partner1Name" name="partner1Name" class="form-input" placeholder="First name" required>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label" for="partner2Name">Partner 2 Name *</label>
-              <input type="text" id="partner2Name" name="partner2Name" class="form-input" placeholder="First name" required>
-            </div>
-          </div>
-
+      <form id="weddingForm">
+        <div class="card">
+          <!-- Couple Names -->
           <div class="form-group">
-            <label class="form-label" for="email">Email Address *</label>
-            <input type="email" id="email" name="email" class="form-input" placeholder="your@email.com" required>
+            <label class="form-label" for="coupleNames">Couple Names *</label>
+            <input type="text" id="coupleNames" name="coupleNames" class="form-input" placeholder="e.g. Sarah & Michael" required>
           </div>
 
+          <!-- Couple Instagram -->
           <div class="form-group">
-            <label class="form-label" for="instagram">Instagram Handle (optional)</label>
-            <input type="text" id="instagram" name="instagram" class="form-input" placeholder="@yourusername">
-          </div>
-        </div>
-
-        <!-- Wedding Details -->
-        <div class="card mb-8">
-          <h4 class="mb-8" style="border-bottom: var(--border-thin); padding-bottom: var(--space-4);">
-            &#10022; Wedding Details
-          </h4>
-
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-6);">
-            <div class="form-group">
-              <label class="form-label" for="weddingDate">Wedding Date *</label>
-              <input type="date" id="weddingDate" name="weddingDate" class="form-input" required>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label" for="location">Location / Venue *</label>
-              <input type="text" id="location" name="location" class="form-input" placeholder="City, State or Venue Name" required>
-            </div>
+            <label class="form-label" for="coupleInstagram">Couple Instagram Handle <span style="opacity: 0.5;">(optional)</span></label>
+            <input type="text" id="coupleInstagram" name="coupleInstagram" class="form-input" placeholder="@yourhandle">
           </div>
 
+          <!-- Wedding Date -->
           <div class="form-group">
-            <label class="form-label" for="weddingStyle">Wedding Style</label>
-            <select id="weddingStyle" name="weddingStyle" class="form-select">
-              <option value="">Select a style...</option>
-              <option value="classic">Classic & Traditional</option>
-              <option value="modern">Modern & Minimalist</option>
-              <option value="rustic">Rustic & Bohemian</option>
-              <option value="glamorous">Glamorous & Luxe</option>
-              <option value="garden">Garden & Romantic</option>
-              <option value="destination">Destination</option>
-              <option value="intimate">Intimate & Elopement</option>
-              <option value="other">Other</option>
-            </select>
+            <label class="form-label" for="weddingDate">Wedding Date *</label>
+            <input type="date" id="weddingDate" name="weddingDate" class="form-input" required>
           </div>
 
+          <!-- Wedding Location -->
           <div class="form-group">
-            <label class="form-label" for="guestCount">Guest Count</label>
-            <select id="guestCount" name="guestCount" class="form-select">
-              <option value="">Select range...</option>
-              <option value="micro">Micro (Under 20)</option>
-              <option value="intimate">Intimate (20-50)</option>
-              <option value="small">Small (50-100)</option>
-              <option value="medium">Medium (100-150)</option>
-              <option value="large">Large (150-250)</option>
-              <option value="grand">Grand (250+)</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Story & Photos -->
-        <div class="card mb-8">
-          <h4 class="mb-8" style="border-bottom: var(--border-thin); padding-bottom: var(--space-4);">
-            &#9734; Your Story
-          </h4>
-
-          <div class="form-group">
-            <label class="form-label" for="story">Tell Us About Your Day *</label>
-            <textarea id="story" name="story" class="form-textarea" placeholder="Share the highlights, special moments, or anything you'd like us to know about your wedding day..." required></textarea>
+            <label class="form-label" for="weddingLocation">Wedding Location *</label>
+            <input type="text" id="weddingLocation" name="weddingLocation" class="form-input" placeholder="e.g. Napa Valley, California" required>
           </div>
 
+          <!-- Vendor Instagram Handles -->
           <div class="form-group">
-            <label class="form-label" for="advice">Advice for Future Couples</label>
-            <textarea id="advice" name="advice" class="form-textarea" style="min-height: 100px;" placeholder="What wisdom would you share with couples planning their wedding?"></textarea>
+            <label class="form-label" for="vendorInstagrams">Vendor Instagram Handles <span style="opacity: 0.5;">(optional)</span></label>
+            <textarea id="vendorInstagrams" name="vendorInstagrams" class="form-textarea" style="min-height: 100px;" placeholder="e.g. Photographer: @janedoephoto&#10;Florist: @bloomsbyanna&#10;Venue: @thevineyardestate"></textarea>
           </div>
-        </div>
 
-        <!-- Photo Upload -->
-        <div class="card mb-8">
-          <h4 class="mb-8" style="border-bottom: var(--border-thin); padding-bottom: var(--space-4);">
-            &#128247; Wedding Photos
-          </h4>
-
+          <!-- Favorite Detail -->
           <div class="form-group">
-            <label class="form-label">Upload Photos *</label>
+            <label class="form-label" for="favoriteDetail">Favorite Wedding Day Detail <span style="opacity: 0.5;">(optional)</span></label>
+            <textarea id="favoriteDetail" name="favoriteDetail" class="form-textarea" style="min-height: 100px;" placeholder="Tell us about a special moment or detail from your day..."></textarea>
+          </div>
+
+          <!-- Photo Upload -->
+          <div class="form-group">
+            <label class="form-label">Wedding Photos *</label>
             <div class="file-upload" id="photoUpload">
               <input type="file" id="photos" name="photos" multiple accept="image/*" required>
-              <div class="file-upload-icon">&#128247;</div>
+              <div class="file-upload-icon">📷</div>
               <p class="file-upload-text">
                 <strong>Click to upload</strong> or drag and drop<br>
-                <span style="font-size: var(--text-sm);">PNG, JPG, WEBP up to 10MB each</span>
+                <span style="font-size: var(--text-sm); opacity: 0.6;">PNG, JPG, WEBP up to 10MB each</span>
               </p>
             </div>
-            <div id="photoPreview" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: var(--space-4); margin-top: var(--space-4);"></div>
+            <div class="photo-preview-grid" id="photoPreview"></div>
           </div>
 
-          <div class="form-group">
-            <label class="form-label" for="photographer">Photographer Credit</label>
-            <input type="text" id="photographer" name="photographer" class="form-input" placeholder="Photographer name or studio">
-          </div>
-        </div>
-
-        <!-- Vendor Credits -->
-        <div class="card mb-8">
-          <h4 class="mb-8" style="border-bottom: var(--border-thin); padding-bottom: var(--space-4);">
-            &#10024; Vendor Credits (Optional)
-          </h4>
-          <p class="text-muted mb-8" style="font-size: var(--text-sm);">
-            Help other couples find amazing vendors by sharing who helped make your day special.
-          </p>
-
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-6);">
-            <div class="form-group">
-              <label class="form-label" for="venue">Venue</label>
-              <input type="text" id="venue" name="venue" class="form-input" placeholder="Venue name">
-            </div>
-
-            <div class="form-group">
-              <label class="form-label" for="planner">Wedding Planner</label>
-              <input type="text" id="planner" name="planner" class="form-input" placeholder="Planner name">
-            </div>
-
-            <div class="form-group">
-              <label class="form-label" for="florist">Florist</label>
-              <input type="text" id="florist" name="florist" class="form-input" placeholder="Florist name">
-            </div>
-
-            <div class="form-group">
-              <label class="form-label" for="caterer">Caterer</label>
-              <input type="text" id="caterer" name="caterer" class="form-input" placeholder="Caterer name">
-            </div>
-
-            <div class="form-group">
-              <label class="form-label" for="dressDesigner">Dress Designer</label>
-              <input type="text" id="dressDesigner" name="dressDesigner" class="form-input" placeholder="Designer or boutique">
-            </div>
-
-            <div class="form-group">
-              <label class="form-label" for="musicBand">Music / DJ</label>
-              <input type="text" id="musicBand" name="musicBand" class="form-input" placeholder="Band or DJ name">
-            </div>
-          </div>
-        </div>
-
-        <!-- Consent & Submit -->
-        <div class="card">
-          <div class="form-group">
+          <!-- Terms Checkbox -->
+          <div class="form-group" style="margin-top: var(--space-8);">
             <label style="display: flex; align-items: flex-start; gap: var(--space-3); cursor: pointer;">
-              <input type="checkbox" id="consent" name="consent" required style="margin-top: 4px; accent-color: var(--mauve-400);">
-              <span class="text-muted" style="font-size: var(--text-sm);">
-                I confirm that I have the rights to these photos and give Daily I Do permission to feature
-                my wedding on their website and social media channels. *
+              <input type="checkbox" id="termsAccepted" name="termsAccepted" required style="margin-top: 4px; accent-color: var(--accent); width: 18px; height: 18px;">
+              <span style="font-size: var(--text-sm); color: rgba(255,255,255,0.7);">
+                I agree to the <button type="button" class="terms-link" id="openTerms">Terms and Conditions</button> and give Daily I Do permission to feature my wedding.
               </span>
             </label>
           </div>
 
-          <button type="submit" class="btn btn-primary" style="width: 100%; padding: var(--space-5);">
+          <!-- Submit Button -->
+          <button type="submit" class="btn btn-primary" style="width: 100%; padding: var(--space-4); margin-top: var(--space-6);">
             Submit Your Wedding
           </button>
         </div>
-
       </form>
 
-      <!-- Success Message (Hidden by default) -->
-      <div id="successMessage" class="card text-center hidden" style="padding: var(--space-16);">
-        <div style="font-size: 4rem; margin-bottom: var(--space-6);">&#128141;</div>
-        <h3 class="mb-4">Thank You!</h3>
-        <p class="text-muted mb-8">
-          Your wedding submission has been received. We'll review your photos and story,
-          and reach out via email if we'd like to feature your special day.
+      <!-- Success Message -->
+      <div id="successMessage" class="card text-center hidden" style="padding: var(--space-12);">
+        <div style="font-size: 4rem; margin-bottom: var(--space-6);">💐</div>
+        <h3 style="margin-bottom: var(--space-4);">Thank You!</h3>
+        <p class="text-muted" style="margin-bottom: var(--space-8);">
+          Your wedding submission has been received! We'll review your photos and reach out if we'd like to feature your special day.
         </p>
         <a href="index.html" class="btn btn-outline">Back to Home</a>
       </div>
     </div>
   </section>
 
+  <!-- Terms Modal -->
+  <div class="modal-overlay" id="termsModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Terms and Conditions</h3>
+        <button class="modal-close" id="closeTerms">&times;</button>
+      </div>
+      <div class="modal-body">
+        <h4>1. Photo Rights & Usage</h4>
+        <p>By submitting photos to Daily I Do, you confirm that:</p>
+        <ul>
+          <li>You own the rights to the photos or have obtained permission from the photographer to share them.</li>
+          <li>You grant Daily I Do a non-exclusive, royalty-free license to use, display, and share your photos on our website, app, and social media channels.</li>
+          <li>Proper credit will be given to photographers when handles are provided.</li>
+        </ul>
+
+        <h4>2. Content Guidelines</h4>
+        <p>All submissions must:</p>
+        <ul>
+          <li>Be authentic wedding photos from your own celebration.</li>
+          <li>Not contain any offensive, inappropriate, or copyrighted content.</li>
+          <li>Not include watermarks from other platforms or brands.</li>
+        </ul>
+
+        <h4>3. Privacy</h4>
+        <p>We respect your privacy and will:</p>
+        <ul>
+          <li>Only display the information you provide in your submission.</li>
+          <li>Never sell your personal information to third parties.</li>
+          <li>Store your data securely in accordance with our Privacy Policy.</li>
+        </ul>
+
+        <h4>4. Feature Selection</h4>
+        <p>Submission does not guarantee feature placement. Our editorial team reviews all submissions and selects weddings that align with our content strategy. We may reach out for additional information or photos.</p>
+
+        <h4>5. Removal Requests</h4>
+        <p>If you wish to have your wedding removed from our platform after it has been featured, please contact us at hello@dailyido.com and we will process your request within 30 days.</p>
+
+        <h4>6. Changes to Terms</h4>
+        <p>We reserve the right to modify these terms at any time. Continued use of our submission form constitutes acceptance of any changes.</p>
+
+        <p style="margin-top: var(--space-8); opacity: 0.6; font-size: var(--text-xs);">
+          Last updated: January 2025
+        </p>
+      </div>
+    </div>
+  </div>
+
   <!-- Footer -->
   <footer class="footer">
     <div class="container">
       <div class="footer-inner">
-        <div class="footer-logo">Daily <span style="color: var(--mauve-300); font-style: italic;">I Do</span></div>
+        <div class="footer-logo">💍 Daily I Do</div>
         <ul class="footer-links">
           <li><a href="index.html" class="footer-link">Home</a></li>
-          <li><a href="realwedding.html" class="footer-link">Share Your Day</a></li>
+          <li><a href="realwedding.html" class="footer-link">Real Weddings</a></li>
           <li><a href="#" class="footer-link">Privacy</a></li>
           <li><a href="#" class="footer-link">Terms</a></li>
         </ul>

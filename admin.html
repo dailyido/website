@@ -7,23 +7,30 @@
   <meta name="description" content="Admin dashboard for Daily I Do wedding planning app.">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💍</text></svg>">
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="dark-theme">
   <!-- Navigation -->
-  <nav class="nav scrolled" id="navbar">
+  <nav class="nav">
     <div class="container">
       <div class="nav-inner">
-        <a href="index.html" class="nav-logo">Daily <span>I Do</span></a>
-        <ul class="nav-links" id="navLinks">
+        <a href="index.html" class="nav-logo">
+          <span class="nav-logo-icon">💍</span>
+          Daily I Do
+        </a>
+        <ul class="nav-center">
           <li><a href="index.html" class="nav-link">Home</a></li>
-          <li><a href="realwedding.html" class="nav-link">Share Your Day</a></li>
+          <li><a href="realwedding.html" class="nav-link">Real Weddings</a></li>
           <li><a href="admin.html" class="nav-link active">Admin</a></li>
         </ul>
-        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+        <div class="nav-right">
+          <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
       </div>
     </div>
   </nav>
@@ -31,7 +38,7 @@
   <!-- Login Screen -->
   <section class="admin-login" id="loginSection">
     <div class="login-card">
-      <div style="font-size: 3rem; margin-bottom: var(--space-6); color: var(--mauve-300);">&#128274;</div>
+      <div style="font-size: 3rem; margin-bottom: var(--space-6); color: var(--accent);">🔐</div>
       <h1>Admin Access</h1>
       <p>Enter your password to access the dashboard</p>
 
@@ -48,13 +55,13 @@
         </button>
       </form>
 
-      <p style="margin-top: var(--space-6); font-size: var(--text-sm); color: var(--white-40);">
+      <p style="margin-top: var(--space-6); font-size: var(--text-sm); color: rgba(255,255,255,0.4);">
         Forgot password? Contact the site administrator.
       </p>
     </div>
   </section>
 
-  <!-- Admin Dashboard (Hidden by default) -->
+  <!-- Admin Dashboard -->
   <section class="admin-dashboard hidden" id="dashboardSection">
     <div class="container">
       <div class="dashboard-header">
@@ -88,15 +95,13 @@
       <!-- Submissions Table -->
       <div class="card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-6); flex-wrap: wrap; gap: var(--space-4);">
-          <h4>Recent Submissions</h4>
-          <div style="display: flex; gap: var(--space-4);">
-            <select class="form-select" style="width: auto; padding: var(--space-2) var(--space-4);" id="statusFilter">
-              <option value="all">All Status</option>
-              <option value="pending">Pending</option>
-              <option value="approved">Approved</option>
-              <option value="rejected">Rejected</option>
-            </select>
-          </div>
+          <h4 style="margin: 0; border: none; padding: 0;">Recent Submissions</h4>
+          <select class="form-select" style="width: auto; padding: var(--space-2) var(--space-4);" id="statusFilter">
+            <option value="all">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+          </select>
         </div>
 
         <div style="overflow-x: auto;">
@@ -104,94 +109,34 @@
             <thead>
               <tr>
                 <th>Couple</th>
-                <th>Date</th>
+                <th>Wedding Date</th>
                 <th>Location</th>
-                <th>Style</th>
+                <th>Photos</th>
                 <th>Submitted</th>
                 <th>Status</th>
-                <th>Actions</th>
               </tr>
             </thead>
             <tbody id="submissionsTable">
-              <!-- Sample data - will be replaced with real data -->
               <tr>
-                <td>
-                  <strong>Sarah & Michael</strong><br>
-                  <span class="text-muted" style="font-size: var(--text-sm);">sarah@email.com</span>
-                </td>
-                <td>Oct 15, 2024</td>
-                <td>Napa Valley, CA</td>
-                <td>Garden</td>
-                <td>Jan 10, 2025</td>
-                <td><span class="status-badge status-pending">Pending</span></td>
-                <td>
-                  <button class="btn btn-ghost" style="font-size: var(--text-sm);">View</button>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <strong>Emma & James</strong><br>
-                  <span class="text-muted" style="font-size: var(--text-sm);">emma@email.com</span>
-                </td>
-                <td>Sep 22, 2024</td>
-                <td>Charleston, SC</td>
-                <td>Classic</td>
-                <td>Jan 8, 2025</td>
-                <td><span class="status-badge status-approved">Approved</span></td>
-                <td>
-                  <button class="btn btn-ghost" style="font-size: var(--text-sm);">View</button>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <strong>Olivia & Noah</strong><br>
-                  <span class="text-muted" style="font-size: var(--text-sm);">olivia@email.com</span>
-                </td>
-                <td>Nov 3, 2024</td>
-                <td>Aspen, CO</td>
-                <td>Rustic</td>
-                <td>Jan 5, 2025</td>
-                <td><span class="status-badge status-pending">Pending</span></td>
-                <td>
-                  <button class="btn btn-ghost" style="font-size: var(--text-sm);">View</button>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <strong>Ava & Liam</strong><br>
-                  <span class="text-muted" style="font-size: var(--text-sm);">ava@email.com</span>
-                </td>
-                <td>Aug 18, 2024</td>
-                <td>Miami Beach, FL</td>
-                <td>Glamorous</td>
-                <td>Jan 2, 2025</td>
-                <td><span class="status-badge status-rejected">Rejected</span></td>
-                <td>
-                  <button class="btn btn-ghost" style="font-size: var(--text-sm);">View</button>
+                <td colspan="6" style="text-align: center; padding: 3rem; opacity: 0.6;">
+                  Loading submissions...
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-
-        <!-- Empty State (shown when no submissions) -->
-        <div id="emptyState" class="hidden text-center" style="padding: var(--space-16);">
-          <div style="font-size: 3rem; margin-bottom: var(--space-4); opacity: 0.5;">&#128235;</div>
-          <h5 class="mb-2">No submissions yet</h5>
-          <p class="text-muted">Wedding submissions will appear here once couples start sharing their stories.</p>
-        </div>
       </div>
     </div>
   </section>
 
-  <!-- Footer (only show when logged in) -->
+  <!-- Footer -->
   <footer class="footer hidden" id="adminFooter">
     <div class="container">
       <div class="footer-inner">
-        <div class="footer-logo">Daily <span style="color: var(--mauve-300); font-style: italic;">I Do</span></div>
+        <div class="footer-logo">💍 Daily I Do</div>
         <ul class="footer-links">
           <li><a href="index.html" class="footer-link">Home</a></li>
-          <li><a href="realwedding.html" class="footer-link">Share Your Day</a></li>
+          <li><a href="realwedding.html" class="footer-link">Real Weddings</a></li>
           <li><a href="#" class="footer-link">Privacy</a></li>
           <li><a href="#" class="footer-link">Terms</a></li>
         </ul>
