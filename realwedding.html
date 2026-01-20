@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Share Your Wedding | Daily I Do</title>
+  <meta name="description" content="Share your wedding story and photos with Daily I Do. Inspire other couples with your beautiful celebration.">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💍</text></svg>">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav" id="navbar">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo">Daily <span>I Do</span></a>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="realwedding.html" class="nav-link active">Share Your Day</a></li>
+          <li><a href="admin.html" class="nav-link">Admin</a></li>
+        </ul>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="container">
+      <p class="hero-eyebrow" style="animation: fadeInUp 0.6s ease forwards;">Real Weddings</p>
+      <h1 style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.1s;">Share Your <em class="text-accent">Story</em></h1>
+      <p style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.2s;">
+        Let your love inspire others. We'd be honored to feature your wedding.
+      </p>
+    </div>
+  </header>
+
+  <!-- Submission Form Section -->
+  <section class="section" style="padding-top: var(--space-8);">
+    <div class="container container-narrow">
+      <form id="weddingForm" class="stagger">
+
+        <!-- Couple Information -->
+        <div class="card mb-8">
+          <h4 class="mb-8" style="border-bottom: var(--border-thin); padding-bottom: var(--space-4);">
+            &#9825; About You
+          </h4>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-6);">
+            <div class="form-group">
+              <label class="form-label" for="partner1Name">Partner 1 Name *</label>
+              <input type="text" id="partner1Name" name="partner1Name" class="form-input" placeholder="First name" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="partner2Name">Partner 2 Name *</label>
+              <input type="text" id="partner2Name" name="partner2Name" class="form-input" placeholder="First name" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="email">Email Address *</label>
+            <input type="email" id="email" name="email" class="form-input" placeholder="your@email.com" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="instagram">Instagram Handle (optional)</label>
+            <input type="text" id="instagram" name="instagram" class="form-input" placeholder="@yourusername">
+          </div>
+        </div>
+
+        <!-- Wedding Details -->
+        <div class="card mb-8">
+          <h4 class="mb-8" style="border-bottom: var(--border-thin); padding-bottom: var(--space-4);">
+            &#10022; Wedding Details
+          </h4>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-6);">
+            <div class="form-group">
+              <label class="form-label" for="weddingDate">Wedding Date *</label>
+              <input type="date" id="weddingDate" name="weddingDate" class="form-input" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="location">Location / Venue *</label>
+              <input type="text" id="location" name="location" class="form-input" placeholder="City, State or Venue Name" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="weddingStyle">Wedding Style</label>
+            <select id="weddingStyle" name="weddingStyle" class="form-select">
+              <option value="">Select a style...</option>
+              <option value="classic">Classic & Traditional</option>
+              <option value="modern">Modern & Minimalist</option>
+              <option value="rustic">Rustic & Bohemian</option>
+              <option value="glamorous">Glamorous & Luxe</option>
+              <option value="garden">Garden & Romantic</option>
+              <option value="destination">Destination</option>
+              <option value="intimate">Intimate & Elopement</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="guestCount">Guest Count</label>
+            <select id="guestCount" name="guestCount" class="form-select">
+              <option value="">Select range...</option>
+              <option value="micro">Micro (Under 20)</option>
+              <option value="intimate">Intimate (20-50)</option>
+              <option value="small">Small (50-100)</option>
+              <option value="medium">Medium (100-150)</option>
+              <option value="large">Large (150-250)</option>
+              <option value="grand">Grand (250+)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Story & Photos -->
+        <div class="card mb-8">
+          <h4 class="mb-8" style="border-bottom: var(--border-thin); padding-bottom: var(--space-4);">
+            &#9734; Your Story
+          </h4>
+
+          <div class="form-group">
+            <label class="form-label" for="story">Tell Us About Your Day *</label>
+            <textarea id="story" name="story" class="form-textarea" placeholder="Share the highlights, special moments, or anything you'd like us to know about your wedding day..." required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="advice">Advice for Future Couples</label>
+            <textarea id="advice" name="advice" class="form-textarea" style="min-height: 100px;" placeholder="What wisdom would you share with couples planning their wedding?"></textarea>
+          </div>
+        </div>
+
+        <!-- Photo Upload -->
+        <div class="card mb-8">
+          <h4 class="mb-8" style="border-bottom: var(--border-thin); padding-bottom: var(--space-4);">
+            &#128247; Wedding Photos
+          </h4>
+
+          <div class="form-group">
+            <label class="form-label">Upload Photos *</label>
+            <div class="file-upload" id="photoUpload">
+              <input type="file" id="photos" name="photos" multiple accept="image/*" required>
+              <div class="file-upload-icon">&#128247;</div>
+              <p class="file-upload-text">
+                <strong>Click to upload</strong> or drag and drop<br>
+                <span style="font-size: var(--text-sm);">PNG, JPG, WEBP up to 10MB each</span>
+              </p>
+            </div>
+            <div id="photoPreview" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: var(--space-4); margin-top: var(--space-4);"></div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="photographer">Photographer Credit</label>
+            <input type="text" id="photographer" name="photographer" class="form-input" placeholder="Photographer name or studio">
+          </div>
+        </div>
+
+        <!-- Vendor Credits -->
+        <div class="card mb-8">
+          <h4 class="mb-8" style="border-bottom: var(--border-thin); padding-bottom: var(--space-4);">
+            &#10024; Vendor Credits (Optional)
+          </h4>
+          <p class="text-muted mb-8" style="font-size: var(--text-sm);">
+            Help other couples find amazing vendors by sharing who helped make your day special.
+          </p>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-6);">
+            <div class="form-group">
+              <label class="form-label" for="venue">Venue</label>
+              <input type="text" id="venue" name="venue" class="form-input" placeholder="Venue name">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="planner">Wedding Planner</label>
+              <input type="text" id="planner" name="planner" class="form-input" placeholder="Planner name">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="florist">Florist</label>
+              <input type="text" id="florist" name="florist" class="form-input" placeholder="Florist name">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="caterer">Caterer</label>
+              <input type="text" id="caterer" name="caterer" class="form-input" placeholder="Caterer name">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="dressDesigner">Dress Designer</label>
+              <input type="text" id="dressDesigner" name="dressDesigner" class="form-input" placeholder="Designer or boutique">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="musicBand">Music / DJ</label>
+              <input type="text" id="musicBand" name="musicBand" class="form-input" placeholder="Band or DJ name">
+            </div>
+          </div>
+        </div>
+
+        <!-- Consent & Submit -->
+        <div class="card">
+          <div class="form-group">
+            <label style="display: flex; align-items: flex-start; gap: var(--space-3); cursor: pointer;">
+              <input type="checkbox" id="consent" name="consent" required style="margin-top: 4px; accent-color: var(--mauve-400);">
+              <span class="text-muted" style="font-size: var(--text-sm);">
+                I confirm that I have the rights to these photos and give Daily I Do permission to feature
+                my wedding on their website and social media channels. *
+              </span>
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; padding: var(--space-5);">
+            Submit Your Wedding
+          </button>
+        </div>
+
+      </form>
+
+      <!-- Success Message (Hidden by default) -->
+      <div id="successMessage" class="card text-center hidden" style="padding: var(--space-16);">
+        <div style="font-size: 4rem; margin-bottom: var(--space-6);">&#128141;</div>
+        <h3 class="mb-4">Thank You!</h3>
+        <p class="text-muted mb-8">
+          Your wedding submission has been received. We'll review your photos and story,
+          and reach out via email if we'd like to feature your special day.
+        </p>
+        <a href="index.html" class="btn btn-outline">Back to Home</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-logo">Daily <span style="color: var(--mauve-300); font-style: italic;">I Do</span></div>
+        <ul class="footer-links">
+          <li><a href="index.html" class="footer-link">Home</a></li>
+          <li><a href="realwedding.html" class="footer-link">Share Your Day</a></li>
+          <li><a href="#" class="footer-link">Privacy</a></li>
+          <li><a href="#" class="footer-link">Terms</a></li>
+        </ul>
+      </div>
+      <div class="footer-bottom">
+        &copy; 2025 Daily I Do. Made with love for love.
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
