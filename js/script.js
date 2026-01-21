@@ -147,34 +147,61 @@ function updatePhotoPreview() {
 
   photoPreview.innerHTML = '';
 
-  selectedFiles.forEach((file, index) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const item = document.createElement('div');
-      item.className = 'photo-preview-item';
-      item.innerHTML = `
-        <img src="${e.target.result}" alt="Preview ${index + 1}">
-        <button type="button" class="remove-btn" data-index="${index}">&times;</button>
+  if (selectedFiles.length > 0) {
+    // Create file list
+    const fileList = document.createElement('div');
+    fileList.style.cssText = 'text-align: left; width: 100%;';
+
+    selectedFiles.forEach((file, index) => {
+      const fileItem = document.createElement('div');
+      fileItem.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: rgba(0,0,0,0.03); border-radius: 6px; margin-bottom: 6px; font-size: 14px;';
+
+      const fileName = file.name.length > 30 ? file.name.substring(0, 27) + '...' : file.name;
+      const fileSize = (file.size / 1024 / 1024).toFixed(2);
+
+      fileItem.innerHTML = `
+        <span style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 18px;">📷</span>
+          <span style="color: #333;">${fileName}</span>
+          <span style="color: #999; font-size: 12px;">(${fileSize} MB)</span>
+        </span>
+        <button type="button" class="remove-file-btn" data-index="${index}" style="background: none; border: none; color: #999; cursor: pointer; font-size: 18px; padding: 0 4px; line-height: 1;">&times;</button>
       `;
-      photoPreview.appendChild(item);
+      fileList.appendChild(fileItem);
 
       // Add remove handler
-      item.querySelector('.remove-btn').addEventListener('click', () => {
+      fileItem.querySelector('.remove-file-btn').addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         selectedFiles.splice(index, 1);
         updatePhotoPreview();
       });
-    };
-    reader.readAsDataURL(file);
-  });
+    });
 
-  // Update upload text
-  if (photoUpload && selectedFiles.length > 0) {
-    const uploadText = photoUpload.querySelector('.file-upload-text');
-    if (uploadText) {
-      uploadText.innerHTML = `
-        <strong>${selectedFiles.length} photo${selectedFiles.length > 1 ? 's' : ''} selected</strong><br>
-        <span style="font-size: var(--text-sm); opacity: 0.6;">Click to add more</span>
-      `;
+    photoPreview.appendChild(fileList);
+  }
+
+  // Update upload area text
+  if (photoUpload) {
+    const uploadText = photoUpload.querySelector('.text') || photoUpload.querySelector('.file-upload-text');
+    const uploadIcon = photoUpload.querySelector('.icon') || photoUpload.querySelector('.file-upload-icon');
+
+    if (selectedFiles.length > 0) {
+      if (uploadIcon) uploadIcon.textContent = '✓';
+      if (uploadText) {
+        uploadText.innerHTML = `
+          <strong style="color: #22c55e;">${selectedFiles.length} photo${selectedFiles.length > 1 ? 's' : ''} added</strong><br>
+          <span style="font-size: 12px; opacity: 0.7;">Click to add more</span>
+        `;
+      }
+    } else {
+      if (uploadIcon) uploadIcon.textContent = '📷';
+      if (uploadText) {
+        uploadText.innerHTML = `
+          <strong>Click to upload</strong> or drag and drop<br>
+          <span style="font-size: 12px; opacity: 0.7;">PNG, JPG, WEBP up to 10MB each</span>
+        `;
+      }
     }
   }
 }
