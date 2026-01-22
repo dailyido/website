@@ -395,17 +395,19 @@ h6 { font-size: var(--text-lg); }
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 600px;
+  gap: var(--space-6);
+  min-height: 500px;
 }
 
 .phone-mockup {
   position: relative;
-  width: 280px;
+  width: 200px;
   height: auto;
-  border-radius: 40px;
+  border-radius: 32px;
   box-shadow: var(--shadow-lg);
   overflow: hidden;
   background: var(--white);
+  border: 3px solid var(--black);
 }
 
 .phone-mockup img {
@@ -416,16 +418,10 @@ h6 { font-size: var(--text-lg); }
 
 .phone-mockup-1 {
   z-index: 2;
-  transform: translateX(-20px);
 }
 
 .phone-mockup-2 {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%) translateX(40px) scale(0.9);
   z-index: 1;
-  opacity: 0.95;
 }
 
 /* Phone placeholder when no image */
@@ -463,21 +459,20 @@ h6 { font-size: var(--text-lg); }
   }
 
   .hero-phones {
-    min-height: 400px;
+    min-height: 300px;
     margin-top: var(--space-8);
+    gap: var(--space-4);
   }
 
   .phone-mockup {
-    width: 220px;
+    width: 140px;
+    border-radius: 24px;
+    border-width: 2px;
   }
 
   .phone-placeholder {
-    width: 220px;
-    height: 460px;
-  }
-
-  .phone-mockup-2 {
-    display: none;
+    width: 140px;
+    height: 300px;
   }
 }
 
