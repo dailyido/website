@@ -418,10 +418,12 @@ h6 { font-size: var(--text-lg); }
 
 .phone-mockup-1 {
   z-index: 2;
+  width: 220px;
 }
 
 .phone-mockup-2 {
   z-index: 1;
+  width: 180px;
 }
 
 /* Phone placeholder when no image */
@@ -465,9 +467,16 @@ h6 { font-size: var(--text-lg); }
   }
 
   .phone-mockup {
-    width: 140px;
     border-radius: 24px;
     border-width: 2px;
+  }
+
+  .phone-mockup-1 {
+    width: 150px;
+  }
+
+  .phone-mockup-2 {
+    width: 120px;
   }
 
   .phone-placeholder {
