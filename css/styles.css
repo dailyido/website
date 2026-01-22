@@ -456,12 +456,6 @@ h6 { font-size: var(--text-lg); }
 
   .hero-content {
     max-width: 100%;
-    padding: 0 var(--space-2);
-  }
-
-  .hero-description {
-    max-width: 100%;
-    padding: 0;
   }
 
   .hero-buttons {
@@ -484,21 +478,6 @@ h6 { font-size: var(--text-lg); }
 
   .phone-mockup-2 {
     display: none;
-  }
-}
-
-@media (max-width: 480px) {
-  .container {
-    padding: 0 var(--space-4);
-  }
-
-  .hero-content {
-    padding: 0;
-  }
-
-  .hero-description {
-    font-size: var(--text-base);
-    line-height: 1.6;
   }
 }
 
