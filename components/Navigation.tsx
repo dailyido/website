@@ -39,7 +39,9 @@ export default function Navigation() {
           {/* Right - App Store Button */}
           <div className="flex items-center gap-3">
             <a
-              href="#"
+              href="https://apps.apple.com/us/app/daily-i-do/id6757710079"
+              target="_blank"
+              rel="noopener noreferrer"
               className="hidden md:inline-flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg text-xs font-medium transition-transform hover:scale-[1.02] hover:shadow-md"
             >
               <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">

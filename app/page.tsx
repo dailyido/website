@@ -37,7 +37,9 @@ export default function Home() {
               {/* App Store Button */}
               <div className="flex gap-3 flex-wrap animate-fade-in-up animate-delay-3">
                 <a
-                  href="#"
+                  href="https://apps.apple.com/us/app/daily-i-do/id6757710079"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-5 py-3 bg-black text-white rounded-lg text-xs font-medium transition-transform hover:scale-[1.02] hover:shadow-md"
                 >
                   <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
