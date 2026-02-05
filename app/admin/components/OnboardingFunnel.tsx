@@ -91,10 +91,8 @@ export default function OnboardingFunnel() {
   }
 
   const hasData = Object.keys(data).length > 0
-  const maxUsers = hasData ? Math.max(...Object.values(data), 1) : 100
-  // Use first screen with data as baseline
-  const firstScreenKey = SCREEN_ORDER.find(s => data[s.key])?.key || 'intro'
-  const baselineUsers = data[firstScreenKey] || maxUsers
+  // Use max count as baseline so percentages never exceed 100%
+  const baselineUsers = hasData ? Math.max(...Object.values(data), 1) : 100
 
   if (!hasData) {
     return (
@@ -109,7 +107,8 @@ export default function OnboardingFunnel() {
     <div className="space-y-2">
       {SCREEN_ORDER.map((screen, index) => {
         const count = data[screen.key] || 0
-        const percentage = baselineUsers > 0 ? (count / baselineUsers * 100) : 0
+        const rawPercentage = baselineUsers > 0 ? (count / baselineUsers * 100) : 0
+        const percentage = Math.min(rawPercentage, 100) // Cap at 100% for display
         const prevCount = index > 0 ? (data[SCREEN_ORDER[index - 1].key] || 0) : count
         const dropoff = index > 0 ? prevCount - count : 0
 
