@@ -4,15 +4,17 @@ import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 
 const SCREEN_ORDER = [
+  { key: 'intro', label: 'Intro' },
   { key: 'welcome', label: 'Welcome' },
   { key: 'your_name', label: 'Your Name' },
   { key: 'partner_name', label: 'Partner Name' },
+  { key: 'couple_photo', label: 'Couple Photo' },
   { key: 'wedding_date', label: 'Wedding Date' },
   { key: 'wedding_location', label: 'Location' },
   { key: 'tented_question', label: 'Tented Question' },
-  { key: 'planning_philosophy', label: 'Philosophy' },
   { key: 'notifications_permission', label: 'Notifications' },
-  { key: 'preparedness_check', label: 'Preparedness' },
+  { key: 'preparedness', label: 'Preparedness' },
+  { key: 'referral_source', label: 'Referral Source' },
   { key: 'rating_request', label: 'Rating Request' },
   { key: 'loading', label: 'Loading' },
   { key: 'plan_reveal', label: 'Plan Reveal' },
@@ -37,22 +39,30 @@ export default function OnboardingFunnel() {
           return
         }
 
-        // Count unique users per screen
-        const counts: Record<string, Set<string>> = {}
+        // Count events per screen (will count unique users once user_id is populated)
+        const uniqueUsers: Record<string, Set<string>> = {}
+        const eventCounts: Record<string, number> = {}
+
         events?.forEach(event => {
           if (event.screen_name) {
-            if (!counts[event.screen_name]) {
-              counts[event.screen_name] = new Set()
+            // Track unique users if user_id exists
+            if (!uniqueUsers[event.screen_name]) {
+              uniqueUsers[event.screen_name] = new Set()
             }
             if (event.user_id) {
-              counts[event.screen_name].add(event.user_id)
+              uniqueUsers[event.screen_name].add(event.user_id)
             }
+
+            // Also count total events as fallback
+            eventCounts[event.screen_name] = (eventCounts[event.screen_name] || 0) + 1
           }
         })
 
+        // Use unique user counts if available, otherwise fall back to event counts
         const result: Record<string, number> = {}
-        Object.entries(counts).forEach(([screen, users]) => {
-          result[screen] = users.size
+        Object.keys(eventCounts).forEach(screen => {
+          const uniqueCount = uniqueUsers[screen]?.size || 0
+          result[screen] = uniqueCount > 0 ? uniqueCount : eventCounts[screen]
         })
 
         setData(result)
@@ -82,7 +92,9 @@ export default function OnboardingFunnel() {
 
   const hasData = Object.keys(data).length > 0
   const maxUsers = hasData ? Math.max(...Object.values(data), 1) : 100
-  const welcomeUsers = data['welcome'] || maxUsers
+  // Use first screen with data as baseline
+  const firstScreenKey = SCREEN_ORDER.find(s => data[s.key])?.key || 'intro'
+  const baselineUsers = data[firstScreenKey] || maxUsers
 
   if (!hasData) {
     return (
@@ -97,7 +109,7 @@ export default function OnboardingFunnel() {
     <div className="space-y-2">
       {SCREEN_ORDER.map((screen, index) => {
         const count = data[screen.key] || 0
-        const percentage = welcomeUsers > 0 ? (count / welcomeUsers * 100) : 0
+        const percentage = baselineUsers > 0 ? (count / baselineUsers * 100) : 0
         const prevCount = index > 0 ? (data[SCREEN_ORDER[index - 1].key] || 0) : count
         const dropoff = index > 0 ? prevCount - count : 0
 
