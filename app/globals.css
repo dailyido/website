@@ -53,3 +53,36 @@ body {
 .animate-delay-2 { animation-delay: 0.2s; }
 .animate-delay-3 { animation-delay: 0.3s; }
 .animate-delay-4 { animation-delay: 0.4s; }
+
+@media print {
+  nav,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  .budget-print-header {
+    display: block !important;
+  }
+
+  #budget-print-area {
+    border: 1px solid #e5e5e5 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .category-row {
+    page-break-inside: avoid;
+  }
+
+  input {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+}

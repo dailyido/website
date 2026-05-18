@@ -18,6 +18,11 @@ export default function Footer() {
               </Link>
             </li>
             <li>
+              <Link href="/budgettracker" className="text-sm text-[#7a7a7a] hover:text-[#1a1a1a] transition-colors">
+                Budget Tracker
+              </Link>
+            </li>
+            <li>
               <Link href="/privacy" className="text-sm text-[#7a7a7a] hover:text-[#1a1a1a] transition-colors">
                 Privacy
               </Link>
