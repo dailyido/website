@@ -34,14 +34,6 @@ export default function Navigation() {
                 Real Weddings
               </Link>
             </li>
-            <li>
-              <Link
-                href="/budgettracker"
-                className={`text-sm font-medium transition-colors ${pathname === '/budgettracker' ? 'text-[#1a1a1a]' : 'text-[#4a4a4a] hover:text-[#1a1a1a]'}`}
-              >
-                Budget Tracker
-              </Link>
-            </li>
           </ul>
 
           {/* Right - App Store Button */}
