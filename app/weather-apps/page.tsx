@@ -10,62 +10,27 @@ const apps = [
   {
     name: 'The Weather Channel',
     description: 'Offers accurate, highly rated hourly forecasts and live radar up to 2 weeks in advance.',
-    icon: (
-      // Sun with cloud
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="8" r="3"/>
-        <path d="M12 2v1M12 13v1M4.22 4.22l.7.7M18.36 4.22l-.7.7M2 8h1M21 8h-1"/>
-        <path d="M6 16a4 4 0 0 1 4-4h4a4 4 0 0 1 0 8H6a3 3 0 0 1 0-6"/>
-      </svg>
-    ),
+    icon: 'https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/28/05/6e/28056e64-0b79-4cb3-369b-22b7e8f6149d/AppIcon-0-0-1x_U007emarketing-0-8-0-sRGB-0-85-220.png/200x200bb.jpg',
   },
   {
     name: 'AccuWeather',
     description: 'Provides "MinuteCast" to pinpoint precipitation minute-by-minute, helping you decide when to move the ceremony indoors.',
-    icon: (
-      // Rain drops
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M20 17.58A5 5 0 0 0 18 8h-1.26A8 8 0 1 0 4 16.25"/>
-        <line x1="8" y1="16" x2="8" y2="21"/>
-        <line x1="12" y1="19" x2="12" y2="21"/>
-        <line x1="16" y1="16" x2="16" y2="21"/>
-      </svg>
-    ),
+    icon: 'https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/a8/4d/e6/a84de69e-39a4-a0da-a839-4ddbe7364351/AppIcon-0-0-1x_U007epad-0-1-0-0-sRGB-85-220.png/200x200bb.jpg',
   },
   {
     name: 'Weather Underground',
     description: 'Uses a network of personal weather stations for highly localized, hourly, and daily reports.',
-    icon: (
-      // Network / station nodes
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="5" r="2"/>
-        <circle cx="5" cy="19" r="2"/>
-        <circle cx="19" cy="19" r="2"/>
-        <line x1="12" y1="7" x2="5" y2="17"/>
-        <line x1="12" y1="7" x2="19" y2="17"/>
-        <line x1="7" y1="19" x2="17" y2="19"/>
-      </svg>
-    ),
+    icon: 'https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/7a/0a/a0/7a0aa0ac-7473-b0d3-a0a5-245efb2727ad/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/200x200bb.jpg',
   },
   {
     name: '1 Degree Outside',
     description: 'Hyper-local and provides detailed, specific, and accurate hour-by-hour and long-range (14-day) forecasting.',
-    icon: (
-      // Thermometer
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/>
-      </svg>
-    ),
+    icon: 'https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/52/e9/bf/52e9bf0a-8900-b92a-2155-480253fbc563/AppIcon-0-0-1x_U007emarketing-0-5-0-85-220.jpeg/200x200bb.jpg',
   },
   {
     name: 'Windy',
     description: 'Provides detailed wind and weather layers — great for outdoor ceremonies and tented events.',
-    icon: (
-      // Wind
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/>
-      </svg>
-    ),
+    icon: 'https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/f7/83/f8/f783f8fb-d883-e47e-5763-0f212e8b3425/AppIcon-0-0-1x_U007epad-0-1-85-220.png/200x200bb.jpg',
   },
 ]
 
@@ -106,9 +71,13 @@ export default function WeatherApps() {
           <div className="space-y-6">
             {apps.map(({ name, description, icon }) => (
               <div key={name} className="flex gap-5 p-6 bg-white border border-[#e5e5e5] rounded-2xl">
-                <span className="flex-shrink-0 w-11 h-11 rounded-xl bg-accent-light text-accent flex items-center justify-center">
-                  {icon}
-                </span>
+                <img
+                  src={icon}
+                  alt={`${name} app icon`}
+                  width={44}
+                  height={44}
+                  className="flex-shrink-0 w-11 h-11 rounded-xl object-cover"
+                />
                 <div>
                   <h2 className="font-semibold text-[#1a1a1a] mb-1">{name}</h2>
                   <p className="text-[#5a5a5a] text-sm leading-relaxed">{description}</p>
