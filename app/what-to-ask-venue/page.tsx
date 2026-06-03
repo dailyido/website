@@ -39,9 +39,10 @@ const questions: Question[] = [
   { n: 23, text: 'Do you offer on-site coordination? If so, what services are included and is there an additional charge for them? Will the coordinator supervise day-of? How much assistance can I get with the setup/décor?' },
   { n: 24, text: 'Does the venue have liability insurance?', note: 'If someone gets injured during the party, you don\'t want to be held responsible—if the site doesn\'t have insurance, you\'ll need to get your own.' },
   { n: 25, text: 'Can I hire my own vendors (caterer, coordinator, DJ, etc.), or must I select from a preferred vendor list? If I can bring my own, do you have a list of recommended vendors?' },
-  { n: 26, text: 'What overnight accommodations do you provide? Do you offer a discount for booking multiple rooms? Do you provide a complimentary room or upgrade for the newlyweds? What are the nearest hotels to the venue?' },
-  { n: 27, text: 'Do you have signage or other aids to direct guests to my event?' },
-  { n: 28, text: 'How many other events would be taking place the weekend of our wedding?' },
+  { n: 26, text: 'What overnight accommodations do you provide? Do you offer a discount for booking multiple rooms? Do you provide a complimentary room or upgrade for the newlyweds?' },
+  { n: 27, text: 'What are the nearest hotels to the venue?' },
+  { n: 28, text: 'Do you have signage or other aids to direct guests to my event?' },
+  { n: 29, text: 'How many other events would be taking place the weekend of our wedding?' },
 ]
 
 const tentedQuestions = [
