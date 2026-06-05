@@ -32,15 +32,22 @@ const DEFAULT_CATEGORIES: BudgetCategory[] = [
   },
   {
     id: 'catering-bar',
-    label: 'Catering & Bar',
-    defaultPercent: 35,
+    label: 'Catering & Beverage',
+    defaultPercent: 25,
     actualAmount: '',
     tip: 'Per-head catering costs vary widely by region ($85–$250+). Open bar adds $45–$100/person. Ask about minimums and service charges, which can add 22–25%.',
   },
   {
+    id: 'rentals',
+    label: 'Rentals',
+    defaultPercent: 15,
+    actualAmount: '',
+    tip: 'Covers tables, chairs, linens, china, glassware, and any specialty furniture or lounge pieces. Rental costs add up quickly for tented weddings where nothing is provided by the venue.',
+  },
+  {
     id: 'venue',
     label: 'Venue',
-    defaultPercent: 15,
+    defaultPercent: 10,
     actualAmount: '',
     tip: 'Venue rental ranges from $2k (restaurant buyout) to $20k+ (estate). Off-peak dates (Friday, Sunday, January–March) can cut venue cost by 20–40%.',
   },
@@ -84,7 +91,7 @@ const DEFAULT_CATEGORIES: BudgetCategory[] = [
     label: 'Transportation',
     defaultPercent: 2,
     actualAmount: '',
-    tip: "Covers getting-ready vehicles, ceremony-to-reception shuttle, and the couple's getaway car. Vintage cars and trolleys are popular splurges in this category.",
+    tip: "Covers getting-ready vehicles, ceremony-to-reception shuttle, and the couple's getaway car. Vintage cars and trolleys are popular splurges in this category. This could cost more depending on your guest count and if you choose to offer transportation for your guests.",
   },
   {
     id: 'stationery',
@@ -130,7 +137,7 @@ function daysUntil(dateString: string): number | null {
 function getActiveCategories(state: BudgetState): BudgetCategory[] {
   return state.categories.filter(cat => {
     if (state.venueFoodMode === 'combined') {
-      return cat.id !== 'catering-bar' && cat.id !== 'venue'
+      return cat.id !== 'catering-bar' && cat.id !== 'venue' && cat.id !== 'rentals'
     }
     return cat.id !== 'venue-food-combined'
   })
@@ -402,7 +409,7 @@ export default function BudgetTracker() {
                     : 'text-[#7a7a7a] hover:text-[#4a4a4a]'
                 }`}
               >
-                Combined (50%)
+                Venue (50%)
               </button>
               <button
                 onClick={() => setBudget(prev => ({ ...prev, venueFoodMode: 'split' }))}
@@ -412,7 +419,7 @@ export default function BudgetTracker() {
                     : 'text-[#7a7a7a] hover:text-[#4a4a4a]'
                 }`}
               >
-                Split: Venue 15% + Catering &amp; Bar 35%
+                Tent or Venue Needing Catering: Catering 25% + Rentals 15% + Venue 10%
               </button>
             </div>
           </div>
