@@ -409,7 +409,7 @@ export default function BudgetTracker() {
                     : 'text-[#7a7a7a] hover:text-[#4a4a4a]'
                 }`}
               >
-                Venue (50%)
+                Venue
               </button>
               <button
                 onClick={() => setBudget(prev => ({ ...prev, venueFoodMode: 'split' }))}
@@ -419,7 +419,7 @@ export default function BudgetTracker() {
                     : 'text-[#7a7a7a] hover:text-[#4a4a4a]'
                 }`}
               >
-                Tent or Venue Needing Catering: Catering 25% + Rentals 15% + Venue 10%
+                Tent or Venue Needing Catering
               </button>
             </div>
           </div>
