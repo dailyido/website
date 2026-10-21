@@ -11,13 +11,13 @@ const experts = [
     name: 'Heather',
     initials: 'H',
     bio: 'With over 18 years in the wedding industry, I find so much joy in helping couples bring their wedding vision to life. While I love weddings at all venues, tented weddings are where my heart is. From decor and timelines to vendor coordination and all those little logistics you never knew you needed to think about, because who knew you\'d need to worry about electricity for your wedding tent?! I\'m here to offer guidance, simplify the planning process, and make sure all the details come together so you can truly enjoy your wedding day.',
-    calendlyUrl: 'https://calendly.com/heather-capecodcelebrations',
+    calendlyUrl: 'https://calendly.com/heather-capecodcelebrations/daily-i-do-planner-chat?back=1',
   },
   {
     name: 'Jamie',
     initials: 'J',
-    bio: "I've spent nearly 20 years planning weddings and helping couples navigate everything from the big decisions to the tiny details that make a wedding feel uniquely theirs. As the founder of Cape Cod Celebrations and co-founder of Daily I Do, I created this app to make wedding planning feel less overwhelming and a lot more enjoyable. During our 30-minute call, you can ask me anything — venue questions, budgets, etiquette, timelines, design ideas, family challenges, or whatever else is on your mind. My goal is simple: to help you leave the call feeling excited, confident, and ready for what's next.",
-    calendlyUrl: '', // TODO: add Jamie's Calendly link
+    bio: "I've spent over 20 years planning weddings and helping couples navigate everything from the big decisions to the tiny details that make a wedding feel uniquely theirs. As the founder of Cape Cod Celebrations and co-founder of Daily I Do, I created this app to make wedding planning feel less overwhelming and a lot more enjoyable. During our 30-minute call, you can ask me anything — venue questions, budgets, etiquette, timelines, design ideas, family challenges, or whatever else is on your mind. My goal is simple: to help you leave the call feeling excited, confident, and ready for what's next.",
+    calendlyUrl: 'https://calendly.com/jamiebohlin/daily-i-do-call-with-jamie',
   },
 ]
 
